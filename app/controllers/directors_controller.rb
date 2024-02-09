@@ -9,4 +9,25 @@ class DirectorsController < ApplicationController
     render({ :template => "director_templates/details"})
   end
 
+  def junior
+    youngest = Director.where.not(dob: nil).order(dob: :desc).first
+    if youngest.nil?
+      redirect_to(some_path, alert: "No directors found.") and return
+    else
+      @the_director = youngest
+      render template: "director_templates/youngest"
+    end
+  end
+  
+  def senior
+    eldest = Director.where.not(dob: nil).order(dob: :asc).first
+    if eldest.nil?
+      redirect_to(some_path, alert: "No directors found.") and return
+    else
+      @the_director = eldest
+      render template: "director_templates/eldest"
+    end
+  end
+  
+
 end
